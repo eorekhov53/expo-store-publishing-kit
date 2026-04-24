@@ -52,14 +52,16 @@ Official reference: [EAS Metadata](https://docs.expo.dev/eas/metadata/).
 
 ## 4. Build the app and submit the binary
 
-Use your app’s `eas.json` and `package.json` scripts (profile names differ per project). Typical shape:
+Use the **scripts your app already defines** in `package.json` together with profiles in `eas.json`. This kit does not prescribe raw `eas` CLI invocations — teams usually wrap them (for example **`yarn build-submit:<platform>:<profile>`** or separate `build:*` / `submit:*` scripts).
+
+Pick the right **platform** (`ios`, `android`) and **profile** (`development`, `production`, etc.) for your release. Example **pattern** (names differ per repository):
 
 ```bash
-eas build --profile production --platform ios
-eas submit --profile production -p ios --latest
+yarn build-submit:ios:production
+yarn build-submit:android:production
 ```
 
-Repeat for Android with the right profile.
+If your `package.json` uses different script names, follow those instead.
 
 ---
 
