@@ -41,10 +41,11 @@ From **your app root**:
 ```bash
 npm install -g eas-cli
 eas login
-eas metadata:push
+eas metadata:lint --profile development   # or production — same profile you use for submit
+eas metadata:push --profile development # add --non-interactive in CI
 ```
 
-Official reference: [EAS Metadata](https://docs.expo.dev/eas/metadata/).
+Official reference: [EAS Metadata](https://docs.expo.dev/eas/metadata/). Today **only the Apple App Store** is covered by `store.config.json`; keep Google Play listing text in a separate file or in Play Console ([schema](https://docs.expo.dev/eas/metadata/schema/)).
 
 `eas metadata:pull` updates local `store.config.json` from the stores. Do **not** assume it restores every screenshot binary; keep PNGs in git or regenerate them if `store.config.json` references local files.
 
