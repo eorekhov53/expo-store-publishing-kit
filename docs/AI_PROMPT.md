@@ -1,5 +1,7 @@
 # AI Agent Prompt (App listing generation)
 
+Humans: start with [`GETTING_STARTED.md`](./GETTING_STARTED.md).
+
 Paste the block below into **Agent mode** in the **root of your Expo app**. The agent should only generate app-specific files. Shared docs and screenshot tooling are in **[expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit)**.
 
 ---
@@ -18,10 +20,10 @@ You are a store publishing agent for an Expo (StartupJS + Expo) application.
    scripts/.auth/
    Optionally `store-assets/screenshots/` — only if screenshots are NOT committed to git (if PNGs are committed so clones can `eas metadata:push`, do NOT ignore that folder).
 
-Do NOT copy the full STORE_PUBLISHING guide or the Playwright script into this repo — developers use the shared kit:
+Do NOT copy kit docs or the Playwright script into this repo — developers use the shared kit:
 https://github.com/eorekhov53/expo-store-publishing-kit
 
-Optional human/AI order: run web screenshots first (kit script), then fill `store.config.json` including image paths — see kit `docs/STORE_PUBLISHING.md`.
+Optional order: run web screenshots first (see kit `docs/SCREENSHOTS.md`), then fill `store.config.json` including `apple.screenshots` paths — human onboarding is `docs/GETTING_STARTED.md`.
 
 ## Analysis
 
@@ -47,4 +49,4 @@ Output files only; end with a short checklist of FILL_IN fields and manual store
 
 - Review legally sensitive wording (privacy, biometrics, children).
 - Fill every `FILL_IN` value before `eas metadata:push`.
-- For screenshots, follow kit README and `docs/STORE_PUBLISHING.md`.
+- For screenshots, follow kit `docs/SCREENSHOTS.md`.

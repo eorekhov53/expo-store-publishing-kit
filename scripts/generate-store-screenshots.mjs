@@ -9,6 +9,8 @@
  *   yarn web
  *   APP_URL=http://localhost:8081 node /path/to/expo-store-publishing-kit/scripts/generate-store-screenshots.mjs
  *
+ * Human guide: docs/SCREENSHOTS.md in this repository.
+ *
  * Env:
  *   APP_ROOT   — root of the Expo app (default: process.cwd())
  *   APP_URL    — dev server URL (default: http://localhost:8081)
