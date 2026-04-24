@@ -6,12 +6,12 @@ Generates store-sized PNGs from your app’s **web** build using **Playwright**.
 
 ## 0. Folder layout
 
-You need **two** folders on your machine:
+You need **two** paths on your machine:
 
 1. **Your Expo app** — e.g. `~/Dev/my-expo-app` (where `package.json` and `store.config.json` live).
-2. **This kit** — a **git clone** of `expo-store-publishing-kit`, e.g. `~/Dev/expo-store-publishing-kit`.
+2. **This kit** — a **git clone** of `expo-store-publishing-kit` (clone can live **anywhere**).
 
-They should be **siblings** (same parent folder), like:
+**Sibling folders** (same parent directory) are only a **convenience** so the path from your app to the script is short, for example:
 
 ```text
 ~/Dev/
@@ -19,13 +19,7 @@ They should be **siblings** (same parent folder), like:
   expo-store-publishing-kit/
 ```
 
-Then “path to the kit” from inside your app is:
-
-```text
-../expo-store-publishing-kit
-```
-
-That is **not** a special environment variable — it is simply the relative path from your app folder to the kit clone. You can use an **absolute** path instead if you prefer.
+From `my-expo-app/`, the kit is then `../expo-store-publishing-kit` (one level up, into the clone). That is a normal relative path, not a special variable. If the clone lives elsewhere, use the correct **relative** or **absolute** path to `scripts/generate-store-screenshots.mjs` in your `node ...` command.
 
 ---
 

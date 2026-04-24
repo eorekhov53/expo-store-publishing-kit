@@ -2,36 +2,26 @@
 
 Shared **documentation**, an **optional Playwright script** for web store screenshots, and an **AI prompt template** for drafting listing metadata. Use it with [EAS Metadata](https://docs.expo.dev/eas/metadata/) to publish **Expo** apps to the **App Store** and **Google Play**.
 
-**expo-store-publishing-kit** is not your application. Your Expo app lives in **its own** repository. EAS Metadata reads **`store.config.json`** from the **app root** (next to `app.json` / `package.json`). Clone this repo **separately** and point commands at it when needed.
+This repository is **not** your application. Your Expo app lives in **its own** repo. For store listings, EAS reads **`store.config.json`** from the **app root** (next to `app.json` / `package.json`).
+
+**You do not have to clone this kit** to use EAS Metadata. Cloning is only useful if you want local copies of the templates, the screenshot script, or the AI prompt file.
 
 ---
 
-## 1. Put the kit clone next to your app on disk
+## 1. Add `store.config.json` to your Expo app
 
-Clone this repository so it sits **beside** your Expo project (sibling folders). Names can be anything; these are examples:
+Put the file in the **app root** (same folder as `app.json` / `package.json`), not inside this kit repo.
 
-```text
-~/Dev/
-  my-expo-app/                    ← your Expo app (you run most commands here)
-  expo-store-publishing-kit/      ← this repo (clone of github.com/eorekhov53/expo-store-publishing-kit)
-```
+Ways to create it:
 
-From `my-expo-app/`, the kit folder is reachable as `../expo-store-publishing-kit` (up one directory, then into the kit clone).
-
----
-
-## 2. Add `store.config.json` to your app (not inside the kit)
-
-In **your app root** (same level as `app.json` / `package.json`):
-
-- Start from [`templates/store.config.example.json`](./templates/store.config.example.json), or  
-- Use the copy-paste prompt in [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) in Cursor Agent mode to generate a full file.
+- **`templates/store.config.example.json`** — a **small skeleton**: correct top-level shape for EAS Metadata (`apple` / `google`, `en-US`, placeholders). Copy it into your app as `store.config.json` and replace text and every `FILL_IN`. You can skip it if you already have a config from `eas metadata:pull` or from your own template.
+- **[`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md)** — copy-paste prompt for an AI (e.g. Cursor Agent) to generate a full `store.config.json` from your codebase.
 
 Replace every `FILL_IN` and placeholder URL before you push.
 
 ---
 
-## 3. Push store listing to Apple / Google (EAS Metadata)
+## 2. Push store listing (EAS Metadata)
 
 From **your app root**:
 
@@ -43,7 +33,26 @@ eas metadata:push
 
 Official reference: [EAS Metadata](https://docs.expo.dev/eas/metadata/).
 
-`eas metadata:pull` updates your local `store.config.json` from the stores. Do **not** assume it re-downloads every screenshot file; keep PNGs in git or regenerate them if you rely on local paths (see step 5).
+`eas metadata:pull` updates your local `store.config.json` from the stores. Do **not** assume it re-downloads every screenshot file; keep PNGs in git or regenerate them if you rely on local paths (see optional screenshots below).
+
+---
+
+## 3. (Optional) Clone this kit and place it beside your app
+
+**Only needed** if you want the convenience of:
+
+- running `node ../expo-store-publishing-kit/scripts/...` from your app folder (short relative path), or  
+- copying files from `templates/` without opening GitHub in a browser.
+
+You may clone this repo **anywhere** on disk and use **absolute paths** instead. The sibling layout is **not** a requirement for Apple or Google.
+
+Example layout (optional):
+
+```text
+~/Dev/
+  my-expo-app/
+  expo-store-publishing-kit/
+```
 
 ---
 
@@ -81,7 +90,7 @@ Repeat for Android with the right profile.
 
 ## 7. `.gitignore` in your app (short)
 
-Always ignore Playwright login state:
+Always ignore Playwright login state (only if you use the screenshot script):
 
 ```gitignore
 scripts/.auth/
@@ -95,8 +104,10 @@ Ignore `store-assets/screenshots/` **only** if you do **not** commit listing PNG
 
 | File | Purpose |
 |------|---------|
-| [`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md) | Optional web screenshots; path from your app to this clone |
-| [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | Copy-paste prompt for an AI to draft `store.config.json` in an app repo |
+| [`templates/store.config.example.json`](./templates/store.config.example.json) | Minimal `store.config.json` skeleton (optional starting point) |
+| [`templates/store-screens.config.json`](./templates/store-screens.config.json) | Example routes for the screenshot script (copy into your app if you use screenshots) |
+| [`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md) | Optional web screenshots; paths from your app to this repo |
+| [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | Copy-paste prompt for an AI to draft `store.config.json` |
 
 ## License
 
