@@ -1,0 +1,52 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "info": {
+      "en-US": {
+        "title": "Your App",
+        "subtitle": "Short value prop",
+        "description": "Full description for App Store (max 4000 characters).",
+        "keywords": ["keyword1", "keyword2"],
+        "releaseNotes": "What's new in this version.",
+        "marketingUrl": "https://example.com",
+        "supportUrl": "https://example.com/support",
+        "privacyPolicyUrl": "https://example.com/privacy"
+      }
+    },
+    "categories": ["UTILITIES", "PRODUCTIVITY"],
+    "ageRating": {
+      "appleRatingSystem": {
+        "unrestrictedWebAccess": "NONE",
+        "gamblingSimulated": "NONE",
+        "violenceCartoonOrFantasy": "NONE",
+        "violenceRealistic": "NONE",
+        "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+        "profanityOrCrudeHumor": "NONE",
+        "matureOrSuggestiveThemes": "NONE",
+        "horrorOrFearThemes": "NONE",
+        "medicalOrTreatmentInformation": "NONE",
+        "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+        "sexualContentOrNudity": "NONE",
+        "sexualContentGraphicAndNudity": "NONE"
+      }
+    },
+    "review": {
+      "firstName": "FILL_IN",
+      "lastName": "FILL_IN",
+      "phoneNumber": "FILL_IN_E164",
+      "email": "FILL_IN",
+      "demoUsername": "FILL_IN",
+      "demoPassword": "FILL_IN",
+      "notes": "How a reviewer should log in and reach core functionality."
+    }
+  },
+  "google": {
+    "info": {
+      "en-US": {
+        "title": "Your App — Longer Title OK",
+        "shortDescription": "Up to 80 characters for Play Store short description.",
+        "fullDescription": "Full Play Store description (max 4000 characters)."
+      }
+    }
+  }
+}

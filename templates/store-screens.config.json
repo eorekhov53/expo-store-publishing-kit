@@ -1,0 +1,12 @@
+{
+  "_comment": "Copy to YOUR_APP/scripts/store-screens.config.json",
+  "screens": [
+    { "route": "/", "label": "1-home", "waitFor": null },
+    { "route": "/settings", "label": "2-settings", "waitFor": null }
+  ],
+  "manualNotes": [
+    "Replace routes with your Expo Router paths (e.g. /(tabs)/home).",
+    "Optional waitFor: CSS selector to wait for before screenshot.",
+    "Camera / AR / wearables: add manualNotes describing what designers must shoot on hardware."
+  ]
+}
