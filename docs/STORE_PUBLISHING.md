@@ -1,37 +1,37 @@
 # Store publishing (Expo / StartupJS)
 
-Полный процесс публикации в **App Store** и **Google Play** для приложений на **Expo** (в т.ч. **StartupJS + Expo**). Общий репозиторий с инструментами: [expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit).
+End-to-end process for publishing Expo apps (including StartupJS + Expo) to the App Store and Google Play using the shared toolkit: [expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit).
 
-Три слоя:
+Three layers:
 
-| Слой | Инструмент | Задача |
-|------|------------|--------|
-| Сборка и загрузка бинарника | EAS Build + EAS Submit | Сборка, подпись, отправка в сторы |
-| Тексты и метаданные листинга | [EAS Metadata](https://docs.expo.dev/eas/metadata/) (`store.config.json` в **корне приложения**) | Описания, ключевые слова, возрастной рейтинг, часть скриншотов (iOS) |
-| Скриншоты с веба | Скрипт из kit: `scripts/generate-store-screenshots.mjs` | Playwright, размеры под требования сторов |
-
----
-
-## Что лежит в репозитории приложения
-
-- **`store.config.json`** — только этот файл обязателен в корне проекта для `eas metadata:push`.
-- **`scripts/store-screens.config.json`** — список маршрутов для скриншотов (скопируйте из [templates/store-screens.config.json](../templates/store-screens.config.json) в kit).
-
-Остальная документация и скрипт — **в kit** (этот репозиторий или его клон), чтобы не дублировать между приложениями.
+| Layer | Tool | Purpose |
+|------|------|---------|
+| Build and binary upload | EAS Build + EAS Submit | Build, signing, upload |
+| Listing metadata | [EAS Metadata](https://docs.expo.dev/eas/metadata/) (`store.config.json` in app root) | Descriptions, keywords, rating, some iOS listing fields |
+| Screenshot automation | `scripts/generate-store-screenshots.mjs` from the kit | Playwright captures at store-required sizes |
 
 ---
 
-## Подготовка
+## What stays in each app repo
+
+- **`store.config.json`** — required in app root for `eas metadata:push`
+- **`scripts/store-screens.config.json`** — route list for screenshot automation
+
+Shared docs and the screenshot script stay in the kit repository to avoid duplication across apps.
+
+---
+
+## Prerequisites
 
 ```bash
 npm install -g eas-cli
 
-# В корне приложения:
+# In your app root
 yarn add -D playwright
 npx playwright install chromium
 ```
 
-В `.gitignore` приложения добавьте:
+Recommended `.gitignore` entries in each app:
 
 ```gitignore
 scripts/.auth/
@@ -40,122 +40,121 @@ store-assets/screenshots/
 
 ---
 
-## Часть 1 — EAS Metadata
+## Part 1 — EAS Metadata
 
-Из **корня приложения**, где лежит `store.config.json`:
+From app root (where `store.config.json` lives):
 
 ```bash
 eas metadata:push
-eas metadata:pull   # забрать изменения, сделанные вручную в консолях
+eas metadata:pull   # sync back manual edits from store consoles
 ```
 
-Что обычно покрывает push: название, подзаголовок (iOS), описания, ключевые слова (iOS), release notes, категории, возрастной рейтинг, URL политики/поддержки, контакты для ревью Apple.
+Typical fields covered by metadata push: app title, subtitle (iOS), descriptions, keywords (iOS), release notes, categories, age rating, support/privacy URLs, and App Review contact fields.
 
 ---
 
-## Часть 2 — Скриншоты (веб)
+## Part 2 — Screenshots (web)
 
-1. Скопируйте `templates/store-screens.config.json` из kit в приложение как `scripts/store-screens.config.json` и пропишите **реальные пути** Expo Router (`/home`, `/(tabs)/contacts` и т.д.).
+1. Copy `templates/store-screens.config.json` from the kit into your app as `scripts/store-screens.config.json`, then replace routes with real Expo Router paths.
 
-2. Запустите веб:
+2. Start app web server:
 
 ```bash
 yarn web
-# или свой скрипт прод-сервера веба
 ```
 
-3. Из **корня приложения** (или с `APP_ROOT`):
+3. Run the shared screenshot script from your app root:
 
 ```bash
 export APP_URL=http://localhost:8081
-export KIT_CLONE=../expo-store-publishing-kit   # путь к клону kit
+export KIT_CLONE=../expo-store-publishing-kit
 
 node "$KIT_CLONE/scripts/generate-store-screenshots.mjs"
-# или APP_ROOT=/abs/path/to/app node ...
+# or set APP_ROOT=/abs/path/to/app and run from anywhere
 ```
 
-Первый запуск: откроется браузер — войдите в приложение, затем Enter в терминале. Сессия сохранится в `scripts/.auth/session.json`.
+First run opens a browser for manual login. Press Enter in terminal after login. Session is saved at `scripts/.auth/session.json`.
 
-Сброс сессии:
+Reset saved session:
 
 ```bash
 node "$KIT_CLONE/scripts/generate-store-screenshots.mjs" --reset-session
 ```
 
-Только iOS или только Android:
+Filter by platform/device:
 
 ```bash
 node "$KIT_CLONE/scripts/generate-store-screenshots.mjs" --platform=ios
 node "$KIT_CLONE/scripts/generate-store-screenshots.mjs" --platform=android
 ```
 
-Выходные файлы:
+Output folders:
 
 ```
 store-assets/screenshots/
-  ios/iphone-6.7/     … 1290×2796 (основной размер App Store)
+  ios/iphone-6.7/     1290x2796 (primary App Store size)
   ios/iphone-6.5/
   ios/ipad-pro-12.9/
-  android/phone/      … 1080×1920
+  android/phone/      1080x1920
   android/tablet-10/
 ```
 
-### Что не снять с веба
+### Screens that cannot be captured from web
 
-Экраны с **камерой**, **BLE**, **нативными очками**, **push** и т.п. — только устройство или макет от дизайнера. Перечислите их в `manualNotes` внутри `store-screens.config.json` — скрипт выведет напоминание в конце.
+Camera/BLE/native-hardware/push-dependent flows must be captured on real devices or produced by designers. Add them to `manualNotes` in `scripts/store-screens.config.json` so the script prints reminders.
 
-Ссылки на бесплатные мокапы: [Shots.so](https://shots.so), [AppMockUp](https://app-mockup.com).
+Free mockup tools: [Shots.so](https://shots.so), [AppMockUp](https://app-mockup.com).
 
-### Привязка скриншотов к `store.config.json` (iOS)
+### Linking screenshots in `store.config.json` (iOS)
 
-После генерации добавьте пути в `apple.screenshots` и снова `eas metadata:push`. Для **Google Play** скриншоты часто загружаются вручную в консоли (поддержка в Metadata ограничена — уточняйте в [документации Expo](https://docs.expo.dev/eas/metadata/)).
+After generating files, add paths under `apple.screenshots` and run `eas metadata:push` again. For Google Play, screenshot upload is often still handled manually in Play Console (check latest [Expo Metadata docs](https://docs.expo.dev/eas/metadata/)).
 
 ---
 
-## Часть 3 — Сборка и submit
+## Part 3 — Build and submit
 
-Команды зависят от вашего `package.json`. Типично:
+Commands depend on each app's `package.json` and `eas.json`. Typical examples:
 
 ```bash
 eas build --profile production --platform ios
 eas submit --profile production -p ios --latest
 ```
 
-То же для Android. Уточните профили в `eas.json` проекта.
+Repeat for Android with the matching profile.
 
 ---
 
-## Что разработчик делает только вручную
+## Manual work that cannot be automated
 
-Ни EAS Metadata, ни скрипт скриншотов это не закрывают.
+### App Store Connect
 
-### App Store Connect (один раз и по релизам)
-
-- Создание записи приложения, цены, доступность по странам
-- Анкета **App Privacy** (сбор данных)
-- Загрузка скриншотов, которые нельзя получить с веба
-- Реальные значения в `apple.review` и рабочий демо-аккаунт для ревью
-- Отправка на ревью после загрузки билда
+- Create app record, pricing, and territory availability
+- Complete App Privacy questionnaire
+- Upload camera/native screenshots not available from web capture
+- Fill real `apple.review` contact + demo credentials
+- Submit build for review
 
 ### Google Play Console
 
-- Запись приложения, **рейтинг контента** (IARC), **Data safety**
-- **Feature graphic** 1024×500
-- Скриншоты и графика по правилам консоли
-- Продвижение трека internal → production
+- Create app record
+- Complete Content rating (IARC) and Data safety forms
+- Upload feature graphic (1024x500)
+- Upload screenshots and listing graphics
+- Promote internal/testing track to production
 
-### Каждый релиз
+### Every release
 
-- Обновить `releaseNotes` / описания в `store.config.json`
-- `eas metadata:push` + новый билд + submit
+- Update `releaseNotes` and listing text in `store.config.json`
+- Run `eas metadata:push`
+- Build + submit new binaries
 
 ---
 
 ## Troubleshooting
 
-| Проблема | Действие |
-|----------|----------|
-| `eas metadata:push` и auth | `eas login` |
-| Скрипт не открывает приложение | Проверьте `APP_URL` и что `yarn web` запущен |
-| Везде экран логина | `--reset-session`, залогиньтесь снова |
-| Отклонили из-за privacy URL | Заполните реальный `privacyPolicyUrl` в `store.config.json` |
+| Problem | Action |
+|---------|--------|
+| `eas metadata:push` auth error | `eas login` |
+| Script cannot reach app | Check `APP_URL` and ensure `yarn web` is running |
+| Script keeps capturing login screen | Run with `--reset-session` and log in again |
+| Store rejects for missing privacy URL | Fill real `privacyPolicyUrl` in `store.config.json` |

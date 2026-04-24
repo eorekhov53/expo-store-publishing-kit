@@ -1,10 +1,10 @@
-# Промпт для ИИ-агента (генерация листинга в приложении)
+# AI Agent Prompt (App listing generation)
 
-Вставьте блок ниже в **Agent mode** в **корне вашего Expo-проекта**. Агент должен создать/обновить только то, что относится к **конкретному приложению**. Общие гайды и скрипт скриншотов — в репозитории **[expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit)**.
+Paste the block below into **Agent mode** in the **root of your Expo app**. The agent should only generate app-specific files. Shared docs and screenshot tooling are in **[expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit)**.
 
 ---
 
-## PROMPT (копировать отсюда)
+## PROMPT (copy from here)
 
 ```
 You are a store publishing agent for an Expo (StartupJS + Expo) application.
@@ -22,7 +22,7 @@ https://github.com/eorekhov53/expo-store-publishing-kit
 
 ## Analysis
 
-Read app.json / app.config.js, app/** screens, components/**, permissions strings, eas.json. Infer audience, features, privacy story.
+Read app.json / app.config.js, app/** screens, components/**, permission strings, and eas.json. Infer audience, core features, and privacy story.
 
 ## store.config.json
 
@@ -34,13 +34,13 @@ Read app.json / app.config.js, app/** screens, components/**, permissions string
 - screens: { route, label, waitFor? } for each major tab/screen safe to open in web after login.
 - manualNotes: bullets for camera-only / native-only screens designers must capture.
 
-Output files only; end with a short checklist of FILL_IN fields and manual store console steps (one paragraph).
+Output files only; end with a short checklist of FILL_IN fields and manual store-console steps (one paragraph).
 ```
 
 ---
 
-## После генерации
+## After generation
 
-- Проверьте юридически чувствительные формулировки (privacy, биометрия, дети).
-- Заполните все `FILL_IN` перед `eas metadata:push`.
-- Скриншоты: см. README kit и `docs/STORE_PUBLISHING.md` в том же репозитории.
+- Review legally sensitive wording (privacy, biometrics, children).
+- Fill every `FILL_IN` value before `eas metadata:push`.
+- For screenshots, follow kit README and `docs/STORE_PUBLISHING.md`.

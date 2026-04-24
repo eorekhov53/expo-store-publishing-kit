@@ -1,57 +1,55 @@
 # expo-store-publishing-kit
 
-Набор шаблонов и инструментов для публикации **Expo**‑приложений (в т.ч. на **StartupJS + Expo**) в **App Store** и **Google Play**: EAS Metadata, чеклисты ручных шагов, промпт для ИИ‑агента и скрипт скриншотов через **Playwright** (веб‑сборка приложения).
+A reusable toolkit for publishing **Expo** apps (including **StartupJS + Expo**) to the **App Store** and **Google Play**: EAS Metadata workflow docs, manual checklists, an AI agent prompt, and a Playwright screenshot script for web-rendered screens.
 
-Репозиторий рассчитан на **одну компанию / несколько проектов**: в каждом приложении остаётся только свой `store.config.json`, всё остальное подключается по ссылке на этот репозиторий или копированием файлов.
+The repo is designed for **one company / many apps**: each app keeps its own `store.config.json`, while shared process docs and tooling live here.
 
-## Быстрый старт для разработчика
+## Quick start (for app developers)
 
-1. В корне своего Expo‑проекта заведите **`store.config.json`** (можно сгенерировать через ИИ по промпту из [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md)).
-2. Прочитайте гайд [`docs/STORE_PUBLISHING.md`](./docs/STORE_PUBLISHING.md).
-3. Для автоматических скриншотов веб‑версии:
-   - один раз: `yarn add -D playwright && npx playwright install chromium`
-   - скопируйте [`templates/store-screens.config.json`](./templates/store-screens.config.json) в свой проект как **`scripts/store-screens.config.json`** и отредактируйте маршруты под ваше приложение
-   - из **корня приложения** выполните (подставьте путь к клону этого репозитория):
+1. In your Expo app root, create **`store.config.json`** (you can generate it with the prompt in [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md)).
+2. Read [`docs/STORE_PUBLISHING.md`](./docs/STORE_PUBLISHING.md).
+3. For automated web screenshots:
+   - one-time: `yarn add -D playwright && npx playwright install chromium`
+   - copy [`templates/store-screens.config.json`](./templates/store-screens.config.json) into your app as **`scripts/store-screens.config.json`** and edit routes
+   - run from your app root (replace with your local clone path):
 
    ```bash
-   yarn web   # отдельный терминал
+   yarn web
    APP_URL=http://localhost:8081 node /path/to/expo-store-publishing-kit/scripts/generate-store-screenshots.mjs
    ```
 
-   Текущая рабочая директория считается корнем приложения (`APP_ROOT`), если не задано иное: `APP_ROOT=/abs/path/to/app`.
+   The current working directory is treated as app root unless `APP_ROOT` is set.
 
-4. Метаданные в сторы: `eas metadata:push` (из корня приложения, где лежит `store.config.json`).
+4. Push listing metadata from your app root: `eas metadata:push`.
 
-## Содержимое репозитория
+## Repository contents
 
-| Путь | Назначение |
-|------|------------|
-| [`docs/STORE_PUBLISHING.md`](./docs/STORE_PUBLISHING.md) | Полный процесс: EAS Metadata, скриншоты, билд/submit, что делать вручную |
-| [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | Промпт для Cursor/другого агента: сгенерировать `store.config.json` и локальные файлы в приложении |
-| [`scripts/generate-store-screenshots.mjs`](./scripts/generate-store-screenshots.mjs) | Playwright: сессия после первого логина, размеры под требования сторов |
-| [`templates/store-screens.config.json`](./templates/store-screens.config.json) | Пример списка URL для скриншотов — копируется в приложение |
-| [`templates/store.config.example.json`](./templates/store.config.example.json) | Минимальный каркас `store.config.json` |
+| Path | Purpose |
+|------|---------|
+| [`docs/STORE_PUBLISHING.md`](./docs/STORE_PUBLISHING.md) | End-to-end workflow: metadata, screenshots, build/submit, and manual tasks |
+| [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | Prompt for Cursor/AI agent to generate app-specific listing files |
+| [`scripts/generate-store-screenshots.mjs`](./scripts/generate-store-screenshots.mjs) | Playwright capture with persisted login session and store-size outputs |
+| [`templates/store-screens.config.json`](./templates/store-screens.config.json) | Example screenshot route config to copy into an app |
+| [`templates/store.config.example.json`](./templates/store.config.example.json) | Minimal `store.config.json` skeleton |
 
-## Git в приложении
-
-Рекомендуется добавить в `.gitignore` приложения:
+## Recommended app .gitignore entries
 
 ```gitignore
 scripts/.auth/
 store-assets/screenshots/
 ```
 
-## Git: push на GitHub
+## GitHub push note
 
-Если `git push` по SSH падает с «Permission denied» (ключ привязан к другому GitHub‑аккаунту), используйте HTTPS‑remote:
+If SSH push fails with `Permission denied` because your SSH key belongs to another GitHub account, switch to HTTPS remote:
 
 ```bash
 git remote set-url origin https://github.com/eorekhov53/expo-store-publishing-kit.git
 git push origin main
 ```
 
-Или настройте SSH‑ключ для аккаунта, владеющего репозиторием.
+Or configure an SSH key for the account that owns the repository.
 
-## Лицензия
+## License
 
-MIT — см. [`LICENSE`](./LICENSE).
+MIT — see [`LICENSE`](./LICENSE).
