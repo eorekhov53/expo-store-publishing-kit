@@ -8,14 +8,31 @@ Three layers:
 |------|------|---------|
 | Build and binary upload | EAS Build + EAS Submit | Build, signing, upload |
 | Listing metadata | [EAS Metadata](https://docs.expo.dev/eas/metadata/) (`store.config.json` in app root) | Descriptions, keywords, rating, some iOS listing fields |
-| Screenshot automation | `scripts/generate-store-screenshots.mjs` from the kit | Playwright captures at store-required sizes |
+| Screenshot automation | `scripts/generate-store-screenshots.mjs` from the kit | Playwright captures at store-required sizes (**optional**) |
+
+---
+
+## Suggested workflow order
+
+1. **Optional — web screenshots first**  
+   Run the Playwright script so `store-assets/screenshots/...` exists on disk. Then an AI or a human can edit **`store.config.json`** once, including **`apple.screenshots`** paths that point at those files. You skip this entirely if you upload screenshots only in App Store Connect / Play Console or use designer assets later.
+
+2. **Create / refine `store.config.json`**  
+   Text fields, URLs, review notes, and (if you did step 1) screenshot paths.
+
+3. **`eas metadata:push`**  
+   Expo reads **local files** at the paths listed under `apple.screenshots` (and other supported fields) and uploads them to Apple. Paths must exist at push time.
+
+4. **Build + `eas submit`** when the binary is ready.
+
+You can swap (1) and (2) if you prefer to draft copy first and attach images in a second pass — screenshots are never required for a valid first `store.config.json`.
 
 ---
 
 ## What stays in each app repo
 
 - **`store.config.json`** — required in app root for `eas metadata:push`
-- **`scripts/store-screens.config.json`** — route list for screenshot automation
+- **`scripts/store-screens.config.json`** — only if you use the optional Playwright screenshot flow
 
 Shared docs and the screenshot script stay in the kit repository to avoid duplication across apps.
 
@@ -35,8 +52,9 @@ Recommended `.gitignore` entries in each app:
 
 ```gitignore
 scripts/.auth/
-store-assets/screenshots/
 ```
+
+Add `store-assets/screenshots/` **only if** you do not commit listing PNGs (see next section).
 
 ---
 
@@ -46,14 +64,27 @@ From app root (where `store.config.json` lives):
 
 ```bash
 eas metadata:push
-eas metadata:pull   # sync back manual edits from store consoles
+eas metadata:pull   # sync remote listing fields into local store.config.json
 ```
 
 Typical fields covered by metadata push: app title, subtitle (iOS), descriptions, keywords (iOS), release notes, categories, age rating, support/privacy URLs, and App Review contact fields.
 
+### Where screenshot files should live (git)
+
+- **`eas metadata:push` needs real files on disk** at the paths referenced in `store.config.json` (usually paths relative to the app root, e.g. `./store-assets/screenshots/ios/iphone-6.7/1-home.png`).
+- **Committing PNGs to the app repo is optional but practical** for teams: everyone who clones the repo can push metadata without re-running Playwright. Large repos may prefer **Git LFS** or generating screenshots in CI right before `eas metadata:push`.
+- If you **do not** commit screenshots, keep `store-assets/screenshots/` in `.gitignore` and regenerate (or copy designer files) before each push that includes images.
+
+### `eas metadata:pull` and images
+
+- **`eas metadata:pull` updates `store.config.json` from the store** (text and structured listing fields). Behavior for **re-downloading every screenshot binary** into your tree can vary by EAS CLI / connector version.
+- **Do not treat `metadata:pull` as guaranteed backup** of all PNG bytes. If you need reproducible pushes from any machine, **version-control the image files** (or store them in CI artifacts) and keep paths in `store.config.json` stable.
+
+See [EAS Metadata](https://docs.expo.dev/eas/metadata/) for the latest pull/push capabilities.
+
 ---
 
-## Part 2 — Screenshots (web)
+## Part 2 — Screenshots (web, optional)
 
 1. Copy `templates/store-screens.config.json` from the kit into your app as `scripts/store-screens.config.json`, then replace routes with real Expo Router paths.
 

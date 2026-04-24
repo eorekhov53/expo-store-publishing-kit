@@ -12,13 +12,16 @@ You are a store publishing agent for an Expo (StartupJS + Expo) application.
 ## Scope
 
 1. Create or update `store.config.json` in the project root for EAS Metadata (full en-US listing, categories, age rating, review placeholders with FILL_IN where unknown).
-2. Create `scripts/store-screens.config.json` listing Expo Router paths to screenshot (see expo-store-publishing-kit templates for JSON shape: screens[], manualNotes[]).
-3. Append to `.gitignore` if missing:
+2. If the repo already contains generated listing images under `store-assets/screenshots/` (any layout), wire **`apple.screenshots`** (and any other supported local file paths) in `store.config.json` to those files using correct relative paths for the project.
+3. Optionally create `scripts/store-screens.config.json` for the Playwright flow (see expo-store-publishing-kit templates: screens[], manualNotes[]). This file is only needed if the team uses the optional screenshot script.
+4. Append to `.gitignore` if missing:
    scripts/.auth/
-   store-assets/screenshots/
+   Optionally `store-assets/screenshots/` — only if screenshots are NOT committed to git (if PNGs are committed so clones can `eas metadata:push`, do NOT ignore that folder).
 
 Do NOT copy the full STORE_PUBLISHING guide or the Playwright script into this repo — developers use the shared kit:
 https://github.com/eorekhov53/expo-store-publishing-kit
+
+Optional human/AI order: run web screenshots first (kit script), then fill `store.config.json` including image paths — see kit `docs/STORE_PUBLISHING.md`.
 
 ## Analysis
 
@@ -28,6 +31,7 @@ Read app.json / app.config.js, app/** screens, components/**, permission strings
 
 - Apple: title (≤30), subtitle (≤30), description (≤4000), keywords array (joined ≤100 chars), releaseNotes, URLs (placeholders if unknown), categories, ageRating all NONE unless mature content, review section with FILL_IN for human data + clear review notes.
 - Google: title (≤50), shortDescription (≤80), fullDescription (≤4000).
+- If listing images exist on disk, add `apple.screenshots` for `en-US` (and other locales if applicable) with paths that match the repo layout.
 
 ## store-screens.config.json
 

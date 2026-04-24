@@ -1,5 +1,5 @@
 /**
- * Store screenshot generator (Playwright)
+ * Store screenshot generator (Playwright) — optional step before EAS Metadata.
  *
  * Run from the Expo app root (or set APP_ROOT). Screens are listed in
  *   APP_ROOT/scripts/store-screens.config.json
