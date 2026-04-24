@@ -1,8 +1,6 @@
 # Getting started
 
-One path for a developer who has **never** opened this kit before.
-
-This repository (**expo-store-publishing-kit**) is **not** your Expo app. It holds shared docs, an AI prompt, and an optional Playwright script. Your app stays in **its own** repository with a `store.config.json` in the **app root**.
+**expo-store-publishing-kit** is a separate repository: documentation, an AI prompt template, and an optional Playwright script for store listing work. Your Expo app stays in its own repo. EAS Metadata reads **`store.config.json`** from the **app root** (next to `app.json` / `package.json`).
 
 ---
 

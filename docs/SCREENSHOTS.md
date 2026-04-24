@@ -4,7 +4,7 @@ Generates store-sized PNGs from your app’s **web** build using **Playwright**.
 
 ---
 
-## 0. Folder layout (read this first)
+## 0. Folder layout
 
 You need **two** folders on your machine:
 

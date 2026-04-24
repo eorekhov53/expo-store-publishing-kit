@@ -6,7 +6,7 @@ Each real app keeps its own **`store.config.json`** in the app repository. This 
 
 ## Start here
 
-**[docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)** — single checklist for a first-time reader (folder layout, `store.config.json`, `eas metadata:push`, what is still manual).
+**[docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)** — checklist: clone layout, `store.config.json`, `eas metadata:push`, manual store-console tasks.
 
 ## Other docs
 

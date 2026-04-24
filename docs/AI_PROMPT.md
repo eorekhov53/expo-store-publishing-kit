@@ -1,6 +1,6 @@
 # AI Agent Prompt (App listing generation)
 
-Humans: start with [`GETTING_STARTED.md`](./GETTING_STARTED.md).
+**Manual workflow:** [`GETTING_STARTED.md`](./GETTING_STARTED.md)
 
 Paste the block below into **Agent mode** in the **root of your Expo app**. The agent should only generate app-specific files. Shared docs and screenshot tooling are in **[expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit)**.
 
