@@ -41,6 +41,17 @@ scripts/.auth/
 store-assets/screenshots/
 ```
 
+## Git: push на GitHub
+
+Если `git push` по SSH падает с «Permission denied» (ключ привязан к другому GitHub‑аккаунту), используйте HTTPS‑remote:
+
+```bash
+git remote set-url origin https://github.com/eorekhov53/expo-store-publishing-kit.git
+git push origin main
+```
+
+Или настройте SSH‑ключ для аккаунта, владеющего репозиторием.
+
 ## Лицензия
 
 MIT — см. [`LICENSE`](./LICENSE).
