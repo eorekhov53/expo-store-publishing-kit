@@ -1,6 +1,6 @@
 # AI Agent Prompt (App listing generation)
 
-**Manual workflow:** [`GETTING_STARTED.md`](./GETTING_STARTED.md)
+**Manual workflow:** [README.md](../README.md) at the repository root.
 
 Paste the block below into **Agent mode** in the **root of your Expo app**. The agent should only generate app-specific files. Shared docs and screenshot tooling are in **[expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit)**.
 
@@ -23,7 +23,7 @@ You are a store publishing agent for an Expo application.
 Do NOT copy kit docs or the Playwright script into this repo — developers use the shared kit:
 https://github.com/eorekhov53/expo-store-publishing-kit
 
-Optional order: run web screenshots first (see kit `docs/SCREENSHOTS.md`), then fill `store.config.json` including `apple.screenshots` paths — human onboarding is `docs/GETTING_STARTED.md`.
+Optional order: run web screenshots first (see `docs/SCREENSHOTS.md`), then fill `store.config.json` including `apple.screenshots` paths — human steps are in the root `README.md`.
 
 ## Analysis
 
