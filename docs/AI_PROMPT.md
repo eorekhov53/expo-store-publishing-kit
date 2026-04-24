@@ -9,7 +9,7 @@ Paste the block below into **Agent mode** in the **root of your Expo app**. The 
 ## PROMPT (copy from here)
 
 ```
-You are a store publishing agent for an Expo (StartupJS + Expo) application.
+You are a store publishing agent for an Expo application.
 
 ## Scope
 

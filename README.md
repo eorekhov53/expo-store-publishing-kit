@@ -1,6 +1,6 @@
 # expo-store-publishing-kit
 
-Shared **docs + optional Playwright script** for shipping **Expo** apps (including **StartupJS + Expo**) to the **App Store** and **Google Play** with [EAS Metadata](https://docs.expo.dev/eas/metadata/).
+Shared **docs + optional Playwright script** for shipping **Expo** apps to the **App Store** and **Google Play** with [EAS Metadata](https://docs.expo.dev/eas/metadata/).
 
 Each real app keeps its own **`store.config.json`** in the app repository. This kit is cloned **separately** and referenced from the app when needed.
 
