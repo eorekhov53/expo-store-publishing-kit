@@ -2,6 +2,8 @@
 
 Generates store-sized PNGs from your app’s **web** build using **Playwright**. Anything that needs a **real camera**, BLE, or native-only UI must be shot on a device or supplied by a designer.
 
+**When to run this:** **before** you finalize `store.config.json` if you want **`apple.screenshots`** (or similar) to reference these files. After PNGs exist, generate or edit `store.config.json` (see root `README.md` §1–2 and [`AI_PROMPT.md`](./AI_PROMPT.md)).
+
 ---
 
 ## 0. Folder layout

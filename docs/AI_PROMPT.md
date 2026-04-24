@@ -11,11 +11,11 @@ Paste the block below into **Agent mode** in the **root of your Expo app**. The 
 ```
 You are a store publishing agent for an Expo application.
 
-## Scope
+## Scope (order)
 
-1. Create or update `store.config.json` in the project root for EAS Metadata (full en-US listing, categories, age rating, review placeholders with FILL_IN where unknown).
-2. If the repo already contains generated listing images under `store-assets/screenshots/` (any layout), wire **`apple.screenshots`** (and any other supported local file paths) in `store.config.json` to those files using correct relative paths for the project.
-3. Optionally create `scripts/store-screens.config.json` for the Playwright flow (see expo-store-publishing-kit templates: screens[], manualNotes[]). This file is only needed if the team uses the optional screenshot script.
+1. If listing should include **local Playwright PNGs** but `store-assets/screenshots/` is missing or empty: stop and tell the human to run the kit **`docs/SCREENSHOTS.md`** first, then run this prompt again.
+2. Create or update `store.config.json` in the project root for EAS Metadata (full en-US listing, categories, age rating, review placeholders with FILL_IN where unknown).
+3. If `store-assets/screenshots/` exists, add **`apple.screenshots`** (and any other supported local paths) pointing at those files with paths relative to the app root.
 4. Append to `.gitignore` if missing:
    scripts/.auth/
    Optionally `store-assets/screenshots/` — only if screenshots are NOT committed to git (if PNGs are committed so clones can `eas metadata:push`, do NOT ignore that folder).
@@ -23,7 +23,7 @@ You are a store publishing agent for an Expo application.
 Do NOT copy kit docs or the Playwright script into this repo — developers use the shared kit:
 https://github.com/eorekhov53/expo-store-publishing-kit
 
-Optional order: run web screenshots first (see `docs/SCREENSHOTS.md`), then fill `store.config.json` including `apple.screenshots` paths — human steps are in the root `README.md`.
+Human order: kit **README.md** §1 (screenshots yes/no) → §2 (`store.config.json`).
 
 ## Analysis
 
