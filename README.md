@@ -6,7 +6,7 @@ Each real app keeps its own **`store.config.json`** in the app repository. This 
 
 ## Start here
 
-**[docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)** — checklist: clone layout, `store.config.json`, `eas metadata:push`, manual store-console tasks.
+Read **[docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)**. It explains, in order: where to clone this repository on your computer relative to your Expo app, how to add `store.config.json` to the app, how to run `eas metadata:push`, and which steps you still complete in **App Store Connect** and **Google Play Console** (outside this kit).
 
 ## Other docs
 
