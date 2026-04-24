@@ -39,17 +39,6 @@ scripts/.auth/
 store-assets/screenshots/
 ```
 
-## GitHub push note
-
-If SSH push fails with `Permission denied` because your SSH key belongs to another GitHub account, switch to HTTPS remote:
-
-```bash
-git remote set-url origin https://github.com/eorekhov53/expo-store-publishing-kit.git
-git push origin main
-```
-
-Or configure an SSH key for the account that owns the repository.
-
 ## License
 
 MIT — see [`LICENSE`](./LICENSE).
