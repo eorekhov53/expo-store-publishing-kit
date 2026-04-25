@@ -8,9 +8,9 @@ This repository is **not** your app. Your Expo app stays in its own repo.
 
 ## Two separate processes
 
-### Process A — EAS Metadata config (`store.config.json`)
+### Process A — EAS Metadata config (`store.config.json`) **for iOS/App Store only**
 
-Use this process for listing text/metadata synced by EAS Metadata.
+Use this process for listing text/metadata synced by EAS Metadata for **iOS/App Store only**.
 
 1. Create/update `store.config.json` in your **app root** (next to `app.json` / `package.json`).
 2. Validate and push from app root:
@@ -23,7 +23,7 @@ eas metadata:push --profile development
 ```
 
 Notes:
-- EAS Metadata currently covers **Apple-only** in `store.config.json` root schema.
+- EAS Metadata currently covers **Apple-only** in `store.config.json` root schema (**iOS/App Store only**).
 - Keep Google Play copy in a separate app file (for example `store.google-play-listing.json`) and paste in Play Console.
 - `eas metadata:pull` updates local config fields, but do not treat it as guaranteed screenshot binary restore.
 
@@ -47,7 +47,7 @@ Screenshot policy:
 
 ---
 
-## Build and submit binaries
+## Build and submit binaries (both platforms)
 
 Use your app scripts from `package.json` with profiles from `eas.json` (names differ per repo). Typical pattern:
 

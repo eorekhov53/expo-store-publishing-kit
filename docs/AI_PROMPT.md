@@ -1,4 +1,4 @@
-# AI Agent Prompt (Process A: `store.config.json`)
+# AI Agent Prompt (Process A: `store.config.json`, iOS/App Store only)
 
 Manual workflow is in root [`README.md`](../README.md).
 
@@ -11,13 +11,13 @@ Paste into Agent mode in your Expo app root.
 ```
 You are a store metadata agent for an Expo application.
 
-Goal: Generate/update Process A only (`store.config.json`) for EAS Metadata.
+Goal: Generate/update Process A only (`store.config.json`) for EAS Metadata (**iOS/App Store only**).
 Do not implement screenshot automation in this task.
 
 ## Scope
 
 1. Create or update `store.config.json` in app root for EAS Metadata.
-2. Use Apple-only root schema supported by EAS Metadata today (`configVersion`, `apple`, etc.).
+2. Use Apple-only root schema supported by EAS Metadata today (`configVersion`, `apple`, etc.). Do not implement Google listing sync via EAS Metadata.
 3. Do not add screenshot fields that are not in the current schema.
 4. If screenshot PNGs exist locally, mention in final note that they must be uploaded manually in store consoles.
 5. Append to `.gitignore` if needed:
