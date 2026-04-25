@@ -34,12 +34,12 @@
       "koreaAgeRatingOverride": "NONE"
     },
     "review": {
-      "firstName": "Jane",
-      "lastName": "Doe",
-      "email": "review@example.com",
-      "phone": "+1 415 555 0100",
-      "demoUsername": "demo",
-      "demoPassword": "change-me",
+      "firstName": "Niraj",
+      "lastName": "Kumar",
+      "email": "info@zenkoder.com",
+      "phone": "+1 512 394 4786",
+      "demoUsername": "test@appletest.com",
+      "demoPassword": "qweqwe123",
       "demoRequired": true,
       "notes": "How a reviewer should log in and reach core functionality."
     }
