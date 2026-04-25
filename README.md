@@ -17,6 +17,8 @@ You **do not** need this kit on disk for a minimal flow: only `store.config.json
 
 Everything in **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)** (kit install, clone location, `scripts/store-screens.config.json`, `node …/generate-store-screenshots.mjs`) belongs to the **“yes”** branch only.
 
+**Screenshot policy:** keep **3 screenshots minimum**, usually **3–5 total**, using **phone + tablet** outputs. Add screenshot 4/5 only if they show distinct high-value flows.
+
 ---
 
 
@@ -102,7 +104,7 @@ Add `store-assets/screenshots/` **only** if you do **not** commit listing PNGs. 
 
 | File | Purpose |
 |------|---------|
-| [`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md) | Full Playwright flow (only for the “yes” branch in §1) |
+| [`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md) | Full Playwright flow + screenshot policy: 3–5 total, phone + tablet |
 | [`templates/store.config.example.json`](./templates/store.config.example.json) | Minimal `store.config.json` skeleton |
 | [`templates/store-screens.config.json`](./templates/store-screens.config.json) | Example routes — copy into your app as `scripts/store-screens.config.json` when using screenshots |
 | [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | AI prompt to draft `store.config.json` (after PNGs exist if you use §1 “yes”) |

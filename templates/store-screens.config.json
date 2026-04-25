@@ -1,12 +1,14 @@
 {
   "_comment": "Copy to YOUR_APP/scripts/store-screens.config.json",
+  "_policy": "Use 3 screenshots minimum, typically 3-5 total. Prefer phone + tablet sets.",
   "screens": [
     { "route": "/", "label": "1-home", "waitFor": null },
-    { "route": "/settings", "label": "2-settings", "waitFor": null }
+    { "route": "/contacts", "label": "2-contacts", "waitFor": null },
+    { "route": "/settings", "label": "3-settings", "waitFor": null }
   ],
   "manualNotes": [
-    "Replace routes with your Expo Router paths (e.g. /(tabs)/home).",
-    "Optional waitFor: CSS selector to wait for before screenshot.",
-    "Camera / AR / wearables: add manualNotes describing what designers must shoot on hardware."
+    "Keep list short: 3 minimum, usually 3-5.",
+    "If you add 4th/5th screenshot, ensure it shows a distinct high-value flow.",
+    "Camera / AR / wearables: capture on hardware or designer mockups."
   ]
 }

@@ -47,10 +47,11 @@ Read app.json / app.config.js, app/** screens, components/**, permission strings
 - Apple: title (≤30), subtitle (≤30), description (≤4000), keywords array (joined ≤100 chars), releaseNotes, URLs (placeholders if unknown), categories, `apple.advisory` with least-restrictive defaults unless mature content, **`apple.review`** using **Default `apple.review`** above unless the codebase specifies other contacts.
 - EAS Metadata today is **Apple-only** at the root of `store.config.json` ([schema](https://docs.expo.dev/eas/metadata/schema/)). For Google Play copy, use a separate file in the app repo (e.g. `store.google-play-listing.json`) or omit.
 - If listing images exist on disk, add `apple.screenshots` for `en-US` (and other locales if applicable) with paths that match the repo layout.
+- Screenshot policy: keep **3 minimum**, typically **3–5** total; prioritize **phone + tablet** sets. Add 4th/5th only when they add clear value.
 
 ## store-screens.config.json
 
-- screens: { route, label, waitFor? } for each major tab/screen safe to open in web after login.
+- screens: { route, label, waitFor? } for each major tab/screen safe to open in web after login. Target **3–5** routes (minimum **3**).
 - manualNotes: bullets for camera-only / native-only screens designers must capture.
 
 Output files only; end with a short checklist of any remaining `FILL_IN` fields (URLs, app-specific review notes) and manual store-console steps (one paragraph).
