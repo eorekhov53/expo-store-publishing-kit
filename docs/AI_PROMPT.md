@@ -1,66 +1,53 @@
-# AI Agent Prompt (App listing generation)
+# AI Agent Prompt (Process A: `store.config.json`)
 
-**Manual workflow:** [README.md](../README.md) at the repository root.
+Manual workflow is in root [`README.md`](../README.md).
 
-Paste the block below into **Agent mode** in the **root of your Expo app**. The agent should only generate app-specific files. Shared docs and screenshot tooling are in **[expo-store-publishing-kit](https://github.com/eorekhov53/expo-store-publishing-kit)**.
+Paste into Agent mode in your Expo app root.
 
 ---
 
 ## PROMPT (copy from here)
 
 ```
-You are a store publishing agent for an Expo application.
+You are a store metadata agent for an Expo application.
 
-## Scope (order)
+Goal: Generate/update Process A only (`store.config.json`) for EAS Metadata.
+Do not implement screenshot automation in this task.
 
-1. If listing should include **local Playwright PNGs** but `store-assets/screenshots/` is missing or empty: stop and tell the human to run the kit **`docs/SCREENSHOTS.md`** first, then run this prompt again.
-2. Create or update `store.config.json` in the project root for EAS Metadata (full en-US listing, categories, `apple.advisory` per Expo schema, review + demo credentials — use **defaults below** unless the repo already defines different review contacts).
-3. If `store-assets/screenshots/` exists, add **`apple.screenshots`** (and any other supported local paths) pointing at those files with paths relative to the app root.
-4. Append to `.gitignore` if missing:
-   scripts/.auth/
-   Optionally `store-assets/screenshots/` — only if screenshots are NOT committed to git (if PNGs are committed so clones can `eas metadata:push`, do NOT ignore that folder).
+## Scope
 
-Do NOT copy kit docs or the Playwright script into this repo — developers use the shared kit:
-https://github.com/eorekhov53/expo-store-publishing-kit
+1. Create or update `store.config.json` in app root for EAS Metadata.
+2. Use Apple-only root schema supported by EAS Metadata today (`configVersion`, `apple`, etc.).
+3. Do not add screenshot fields that are not in the current schema.
+4. If screenshot PNGs exist locally, mention in final note that they must be uploaded manually in store consoles.
+5. Append to `.gitignore` if needed:
+   scripts/.auth/ (only relevant if team uses Playwright screenshot flow).
 
-Human order: kit **README.md** §1 (screenshots yes/no) → §2 (`store.config.json`).
+Do NOT copy kit docs or scripts into the app repo.
+Kit repo: https://github.com/eorekhov53/expo-store-publishing-kit
 
-## Default `apple.review` (App Store) — use unless overridden
+## Default `apple.review` (use unless repo already defines other values)
 
-When generating `store.config.json`, set **`apple.review`** to:
+- firstName: Niraj
+- lastName: Kumar
+- email: info@zenkoder.com
+- phone: +1 512 394 4786
+- demoUsername: test@appletest.com
+- demoPassword: qweqwe123
+- demoRequired: true
+- notes: app-specific reviewer steps.
 
-- `firstName`: `Niraj`
-- `lastName`: `Kumar`
-- `email`: `info@zenkoder.com`
-- `phone`: `+1 512 394 4786` (same number as `+15123944786`, EAS-friendly spacing)
-- `demoUsername`: `test@appletest.com`
-- `demoPassword`: `qweqwe123`
-- `demoRequired`: `true`
-- `notes`: app-specific steps for reviewers (permissions, where to tap, how to reach the main flow). Do not put demo secrets in `notes`; use `demoUsername` / `demoPassword`.
+## store.config.json content rules
 
-## Analysis
+- Apple: title (<=30), subtitle (<=30), description (<=4000), keywords (<=100 chars combined), releaseNotes, URLs, categories, `apple.advisory`, `apple.review`.
+- Google Play listing text should go to a separate file (for example `store.google-play-listing.json`) if needed by the team.
 
-Read app.json / app.config.js, app/** screens, components/**, permission strings, and eas.json. Infer audience, core features, and privacy story.
-
-## store.config.json
-
-- Apple: title (≤30), subtitle (≤30), description (≤4000), keywords array (joined ≤100 chars), releaseNotes, URLs (placeholders if unknown), categories, `apple.advisory` with least-restrictive defaults unless mature content, **`apple.review`** using **Default `apple.review`** above unless the codebase specifies other contacts.
-- EAS Metadata today is **Apple-only** at the root of `store.config.json` ([schema](https://docs.expo.dev/eas/metadata/schema/)). For Google Play copy, use a separate file in the app repo (e.g. `store.google-play-listing.json`) or omit.
-- If listing images exist on disk, add `apple.screenshots` for `en-US` (and other locales if applicable) with paths that match the repo layout.
-- Screenshot policy: keep **3 minimum**, typically **3–5** total; prioritize **phone + tablet** sets. Add 4th/5th only when they add clear value.
-
-## store-screens.config.json
-
-- screens: { route, label, waitFor? } for each major tab/screen safe to open in web after login. Target **3–5** routes (minimum **3**).
-- manualNotes: bullets for camera-only / native-only screens designers must capture.
-
-Output files only; end with a short checklist of any remaining `FILL_IN` fields (URLs, app-specific review notes) and manual store-console steps (one paragraph).
+Output files only, then a short checklist of remaining placeholders/manual console tasks.
 ```
 
 ---
 
-## After generation
+## Notes
 
-- Review legally sensitive wording (privacy, biometrics, children).
-- Fill any remaining `FILL_IN` values (e.g. marketing URLs) before `eas metadata:push`. Review contact and demo login are already defaulted in the prompt above.
-- For screenshots, follow kit `docs/SCREENSHOTS.md`.
+- Process B (screenshots) is separate: use [`SCREENSHOTS.md`](./SCREENSHOTS.md).
+- Screenshots are manual upload artifacts for store consoles.

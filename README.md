@@ -1,102 +1,71 @@
 # expo-store-publishing-kit
 
-Shared **documentation**, an **optional Playwright script** for web store screenshots, and an **AI prompt template** for drafting listing metadata. Use it with [EAS Metadata](https://docs.expo.dev/eas/metadata/) to publish **Expo** apps to the **App Store** and **Google Play**.
+Shared docs, an optional Playwright screenshot script, and an AI prompt template for Expo store publishing.
 
-This repository is **not** your application. Your Expo app lives in **its own** repo. EAS reads **`store.config.json`** from the **app root** (next to `app.json` / `package.json`).
-
-You **do not** need this kit on disk for a minimal flow: only `store.config.json` + `eas metadata:push` in your app.
+This repository is **not** your app. Your Expo app stays in its own repo.
 
 ---
 
-## 1. Decide whether you want automated web screenshots
+## Two separate processes
 
-| Situation | What to do first |
-|-----------|------------------|
-| **Yes** — listing images should come from the app’s **web** build (Playwright), and you want paths like `apple.screenshots` in `store.config.json` | Follow **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)** **before** you lock in `store.config.json`. When PNGs exist under `store-assets/screenshots/`, you or an AI can point `store.config.json` at those files. |
-| **No** — screenshots will be done in **App Store Connect / Play Console** or by a **designer** | Skip screenshots. Go straight to **§2**. |
+### Process A — EAS Metadata config (`store.config.json`)
 
-Everything in **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)** (kit install, clone location, `scripts/store-screens.config.json`, `node …/generate-store-screenshots.mjs`) belongs to the **“yes”** branch only.
+Use this process for listing text/metadata synced by EAS Metadata.
 
-**Screenshot policy:** keep **3 screenshots minimum**, usually **3–5 total**, using **phone + tablet** outputs. Add screenshot 4/5 only if they show distinct high-value flows.
-
----
-
-
-If you choose §1 "yes", first install kit dependencies once:
-
-```bash
-cd /path/to/expo-store-publishing-kit
-npm install
-npm run playwright:install
-```
-
-## 2. Add or update `store.config.json` in your Expo app
-
-Do this **after** screenshots on disk **if** you chose “yes” in §1. If you chose “no”, do this step immediately.
-
-Put the file in the **app root** (same folder as `app.json` / `package.json`), not inside this kit repo.
-
-Ways to create it:
-
-- **`templates/store.config.example.json`** — minimal **skeleton** (shape for EAS Metadata, placeholders). Copy into your app as `store.config.json` and edit. Skip if you already have a config (e.g. from `eas metadata:pull`).
-- **[`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md)** — prompt for an AI to generate a full `store.config.json` from your codebase. If `store-assets/screenshots/` already exists, the prompt tells the agent to fill **`apple.screenshots`** with real paths.
-
-Replace every `FILL_IN` and placeholder URL before you push.
-
----
-
-## 3. Push store listing (EAS Metadata)
-
-From **your app root**:
+1. Create/update `store.config.json` in your **app root** (next to `app.json` / `package.json`).
+2. Validate and push from app root:
 
 ```bash
 npm install -g eas-cli
 eas login
-eas metadata:lint --profile development   # or production — same profile you use for submit
-eas metadata:push --profile development # add --non-interactive in CI
+eas metadata:lint --profile development
+eas metadata:push --profile development
 ```
 
-Official reference: [EAS Metadata](https://docs.expo.dev/eas/metadata/). Today **only the Apple App Store** is covered by `store.config.json`; keep Google Play listing text in a separate file or in Play Console ([schema](https://docs.expo.dev/eas/metadata/schema/)).
-
-`eas metadata:pull` updates local `store.config.json` from the stores. Do **not** assume it restores every screenshot binary; keep PNGs in git or regenerate them if `store.config.json` references local files.
+Notes:
+- EAS Metadata currently covers **Apple-only** in `store.config.json` root schema.
+- Keep Google Play copy in a separate app file (for example `store.google-play-listing.json`) and paste in Play Console.
+- `eas metadata:pull` updates local config fields, but do not treat it as guaranteed screenshot binary restore.
 
 ---
 
-## 4. Build the app and submit the binary
+### Process B — Screenshot generation (manual upload flow)
 
-Use the **scripts your app already defines** in `package.json` together with profiles in `eas.json`. This kit does not prescribe raw `eas` CLI invocations — teams usually wrap them (for example **`yarn build-submit:<platform>:<profile>`** or separate `build:*` / `submit:*` scripts).
+Use this process only if you want automated screenshot capture from web.
 
-Pick the right **platform** (`ios`, `android`) and **profile** (`development`, `production`, etc.) for your release. Example **pattern** (names differ per repository):
+- Output files are local PNGs under `store-assets/screenshots/...` in your app.
+- These PNGs are for **manual upload** in App Store Connect / Google Play Console.
+- They are **not** synced by `eas metadata:push` in the current schema.
+
+Read: **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)**
+
+Screenshot policy:
+- Minimum **3** screenshots.
+- Typical set **3–5** total.
+- Prefer **phone + tablet** outputs.
+- Add 4th/5th only if they show distinct high-value flows.
+
+---
+
+## Build and submit binaries
+
+Use your app scripts from `package.json` with profiles from `eas.json` (names differ per repo). Typical pattern:
 
 ```bash
 yarn build-submit:ios:production
 yarn build-submit:android:production
 ```
 
-If your `package.json` uses different script names, follow those instead.
-
 ---
 
-## 5. What you still do in the browser (not covered by this kit)
+## What is always manual in store consoles
 
 | Apple (App Store Connect) | Google (Play Console) |
 |---------------------------|------------------------|
 | App record, pricing, regions | App record, pricing, regions |
 | App Privacy questionnaire | Content rating, Data safety |
-| Review submission after upload | Feature graphic 1024×500, screenshots if not via Metadata |
-| Demo account / review notes in `store.config.json` | Promote release track when ready |
-
----
-
-## 6. `.gitignore` in your app (only if you use Playwright screenshots)
-
-If you followed §1 “yes”:
-
-```gitignore
-scripts/.auth/
-```
-
-Add `store-assets/screenshots/` **only** if you do **not** commit listing PNGs. If the team **commits** screenshots so every clone can run `eas metadata:push`, **do not** ignore that folder.
+| Review submission after binary upload | Feature graphic 1024×500 |
+| Screenshot upload (from Process B outputs) | Screenshot upload (from Process B outputs) |
 
 ---
 
@@ -104,10 +73,10 @@ Add `store-assets/screenshots/` **only** if you do **not** commit listing PNGs. 
 
 | File | Purpose |
 |------|---------|
-| [`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md) | Full Playwright flow + screenshot policy: 3–5 total, phone + tablet |
-| [`templates/store.config.example.json`](./templates/store.config.example.json) | Minimal `store.config.json` skeleton |
-| [`templates/store-screens.config.json`](./templates/store-screens.config.json) | Example routes — copy into your app as `scripts/store-screens.config.json` when using screenshots |
-| [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | AI prompt to draft `store.config.json` (after PNGs exist if you use §1 “yes”) |
+| [`templates/store.config.example.json`](./templates/store.config.example.json) | Minimal `store.config.json` skeleton for Process A |
+| [`docs/AI_PROMPT.md`](./docs/AI_PROMPT.md) | AI prompt for generating `store.config.json` (Process A) |
+| [`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md) | Full screenshot flow (Process B) |
+| [`templates/store-screens.config.json`](./templates/store-screens.config.json) | Example route list for Process B |
 
 ## License
 
