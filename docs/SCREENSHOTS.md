@@ -25,23 +25,27 @@ From `my-expo-app/`, the kit is then `../expo-store-publishing-kit` (one level u
 
 ---
 
-## 1. One-time install (inside your app)
+## 1. One-time install (inside the kit clone)
+
+Install Playwright where the script lives (this repository), not in your Expo app:
 
 ```bash
-cd /path/to/my-expo-app
-yarn add -D playwright
-npx playwright install chromium
+cd /path/to/expo-store-publishing-kit
+npm install
+npm run playwright:install
 ```
+
+(Equivalent with Yarn: `yarn install && yarn playwright:install`)
 
 ---
 
-## 2. Tell the script which URLs to open
+## 2. Tell the script which URLs to open (in your app) (in your app) (in your app) (in your app)
 
 In your app, create **`scripts/store-screens.config.json`** by copying [`templates/store-screens.config.json`](../templates/store-screens.config.json) from the kit. Edit `screens` so each `route` is a real **Expo Router** path (e.g. `/home`, `/settings`).
 
 ---
 
-## 3. Run the web server
+## 3. Run the web server (in your app) (in your app) (in your app) (in your app)
 
 In a **second** terminal, from your app root:
 

@@ -15,9 +15,18 @@ You **do not** need this kit on disk for a minimal flow: only `store.config.json
 | **Yes** — listing images should come from the app’s **web** build (Playwright), and you want paths like `apple.screenshots` in `store.config.json` | Follow **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)** **before** you lock in `store.config.json`. When PNGs exist under `store-assets/screenshots/`, you or an AI can point `store.config.json` at those files. |
 | **No** — screenshots will be done in **App Store Connect / Play Console** or by a **designer** | Skip screenshots. Go straight to **§2**. |
 
-Everything in **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)** (clone location, Playwright, `scripts/store-screens.config.json`, `node …/generate-store-screenshots.mjs`) belongs to the **“yes”** branch only.
+Everything in **[`docs/SCREENSHOTS.md`](./docs/SCREENSHOTS.md)** (kit install, clone location, `scripts/store-screens.config.json`, `node …/generate-store-screenshots.mjs`) belongs to the **“yes”** branch only.
 
 ---
+
+
+If you choose §1 "yes", first install kit dependencies once:
+
+```bash
+cd /path/to/expo-store-publishing-kit
+npm install
+npm run playwright:install
+```
 
 ## 2. Add or update `store.config.json` in your Expo app
 

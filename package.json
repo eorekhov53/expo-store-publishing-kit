@@ -1,0 +1,14 @@
+{
+  "name": "expo-store-publishing-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "screenshots": "node scripts/generate-store-screenshots.mjs",
+    "playwright:install": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.59.1"
+  },
+  "description": "EAS Metadata guides, AI prompt, Playwright web screenshots for Expo App Store & Play Store"
+}

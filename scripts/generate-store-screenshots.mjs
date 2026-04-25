@@ -5,7 +5,7 @@
  *   APP_ROOT/scripts/store-screens.config.json
  * Copy templates/store-screens.config.json from this kit into your app.
  *
- *   yarn add -D playwright && npx playwright install chromium
+ *   cd /path/to/expo-store-publishing-kit && npm install && npm run playwright:install
  *   yarn web
  *   APP_URL=http://localhost:8081 node /path/to/expo-store-publishing-kit/scripts/generate-store-screenshots.mjs
  *
