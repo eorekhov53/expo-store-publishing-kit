@@ -1,4 +1,4 @@
-# AI Agent Prompt (Process A: `store.config.json`, iOS/App Store only)
+# AI Agent Prompt (Process A: iOS/App Store metadata only)
 
 Manual workflow is in root [`README.md`](../README.md).
 
@@ -11,22 +11,22 @@ Paste into Agent mode in your Expo app root.
 ```
 You are a store metadata agent for an Expo application.
 
-Goal: Generate/update Process A only (`store.config.json`) for EAS Metadata (**iOS/App Store only**).
-Do not implement screenshot automation in this task.
+Goal: Generate/update Process A only (`store.config.json`) for EAS Metadata.
+This task is iOS/App Store metadata only.
 
 ## Scope
 
 1. Create or update `store.config.json` in app root for EAS Metadata.
-2. Use Apple-only root schema supported by EAS Metadata today (`configVersion`, `apple`, etc.). Do not implement Google listing sync via EAS Metadata.
-3. Do not add screenshot fields that are not in the current schema.
-4. If screenshot PNGs exist locally, mention in final note that they must be uploaded manually in store consoles.
+2. Use Apple-only root schema supported by EAS Metadata (`configVersion`, `apple`, etc.).
+3. Do not add screenshot fields not supported by current schema.
+4. Mention that screenshots (if generated) are manual upload artifacts for store consoles.
 5. Append to `.gitignore` if needed:
-   scripts/.auth/ (only relevant if team uses Playwright screenshot flow).
+   scripts/.auth/ (only relevant when team uses Playwright screenshot flow).
 
 Do NOT copy kit docs or scripts into the app repo.
 Kit repo: https://github.com/eorekhov53/expo-store-publishing-kit
 
-## Default `apple.review` (use unless repo already defines other values)
+## Default `apple.review` (use unless repo defines different values)
 
 - firstName: Niraj
 - lastName: Kumar
@@ -40,7 +40,9 @@ Kit repo: https://github.com/eorekhov53/expo-store-publishing-kit
 ## store.config.json content rules
 
 - Apple: title (<=30), subtitle (<=30), description (<=4000), keywords (<=100 chars combined), releaseNotes, URLs, categories, `apple.advisory`, `apple.review`.
-- Google Play listing text should go to a separate file (for example `store.google-play-listing.json`) if needed by the team.
+- Apple title must be unique in the App Store Connect account. If taken, generate a close alternative under 30 characters.
+- Use plain ASCII separators in description/release notes (for example `---`). Do not use box-drawing characters like `──────────────────`.
+- Google Play listing text should go to a separate file (for example `store.google-play-listing.json`) and be pasted manually in Play Console.
 
 Output files only, then a short checklist of remaining placeholders/manual console tasks.
 ```
@@ -50,4 +52,4 @@ Output files only, then a short checklist of remaining placeholders/manual conso
 ## Notes
 
 - Process B (screenshots) is separate: use [`SCREENSHOTS.md`](./SCREENSHOTS.md).
-- Screenshots are manual upload artifacts for store consoles.
+- Screenshots are manual upload artifacts for App Store Connect / Google Play Console.

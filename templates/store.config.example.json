@@ -3,9 +3,9 @@
   "apple": {
     "info": {
       "en-US": {
-        "title": "Your App",
+        "title": "Your App Name",
         "subtitle": "Short value prop",
-        "description": "Full description for App Store (max 4000 characters).",
+        "description": "Full description for App Store (max 4000 characters). Use plain ASCII separators like --- if needed.",
         "keywords": ["keyword1", "keyword2"],
         "releaseNotes": "What's new in this version.",
         "marketingUrl": "https://example.com",
