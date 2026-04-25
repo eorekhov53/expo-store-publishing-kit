@@ -6,22 +6,6 @@ Generates store-sized PNGs from your app’s **web** build using **Playwright**.
 
 ---
 
-## Screenshot policy (recommended)
-
-- Capture **3 screenshots minimum**.
-- Typical set is **3–5 screenshots total**.
-- Use **phone + tablet** outputs.
-- Add the 4th/5th screenshot only if it shows clearly different, high-value functionality.
-
-Recommended baseline order:
-1. Primary value screen (main app action)
-2. Secondary core flow
-3. Key supporting screen (profile/settings/listing context)
-4. Optional differentiator
-5. Optional differentiator
-
----
-
 ## 0. Folder layout
 
 You need **two** paths on your machine:
@@ -41,27 +25,23 @@ From `my-expo-app/`, the kit is then `../expo-store-publishing-kit` (one level u
 
 ---
 
-## 1. One-time install (inside the kit clone)
-
-Install Playwright where the script lives (this repository), not in your Expo app:
+## 1. One-time install (inside your app)
 
 ```bash
-cd /path/to/expo-store-publishing-kit
-npm install
-npm run playwright:install
+cd /path/to/my-expo-app
+yarn add -D playwright
+npx playwright install chromium
 ```
 
-(Equivalent with Yarn: `yarn install && yarn playwright:install`)
+---
+
+## 2. Tell the script which URLs to open
+
+In your app, create **`scripts/store-screens.config.json`** by copying [`templates/store-screens.config.json`](../templates/store-screens.config.json) from the kit. Edit `screens` so each `route` is a real **Expo Router** path (e.g. `/home`, `/settings`).
 
 ---
 
-## 2. Tell the script which URLs to open (in your app) (in your app) (in your app) (in your app) (in your app)
-
-In your app, create **`scripts/store-screens.config.json`** by copying [`templates/store-screens.config.json`](../templates/store-screens.config.json) from the kit. Edit `screens` so each `route` is a real **Expo Router** path (e.g. `/home`, `/settings`). Keep the list short: **3 minimum**, usually **3–5**.
-
----
-
-## 3. Run the web server (in your app) (in your app) (in your app) (in your app)
+## 3. Run the web server
 
 In a **second** terminal, from your app root:
 
@@ -89,6 +69,14 @@ If your app is **not** the current directory, set **`APP_ROOT`** to the app root
 
 ```bash
 APP_ROOT=/path/to/my-expo-app APP_URL=http://localhost:8081 node /path/to/expo-store-publishing-kit/scripts/generate-store-screenshots.mjs
+```
+
+By default, the script uses `waitUntil=domcontentloaded` to avoid Expo WebSocket/HMR hangs.
+You can override behavior:
+
+```bash
+node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --wait-until=load
+node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --goto-timeout-ms=45000
 ```
 
 ---
@@ -140,12 +128,12 @@ Files must exist on disk at push time. Google Play listing images are often stil
 node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --reset-session
 node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --platform=ios
 node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --platform=android
+node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --wait-until=load
+node ../expo-store-publishing-kit/scripts/generate-store-screenshots.mjs --goto-timeout-ms=45000
 ```
 
 ---
 
 ## 9. Designer-only shots
-
-If you already have 3 strong screenshots, do not force extra images. Use optional slots only when they improve conversion.
 
 List them in `manualNotes` inside `store-screens.config.json` so the script prints a reminder at the end. Free device mockups: [Shots.so](https://shots.so), [AppMockUp](https://app-mockup.com).

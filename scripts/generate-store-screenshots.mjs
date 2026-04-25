@@ -100,6 +100,12 @@ function sleep (ms) {
   return new Promise(r => setTimeout(r, ms))
 }
 
+function formatMs (ms) {
+  if (ms < 1000) return `${ms}ms`
+  const sec = (ms / 1000).toFixed(1)
+  return `${sec}s`
+}
+
 async function ensureAuth (browser) {
   if (existsSync(AUTH_FILE)) {
     console.log('✓ Reusing saved session:', AUTH_FILE)
@@ -124,7 +130,7 @@ async function ensureAuth (browser) {
   console.log('\n✓ Session saved.\n')
 }
 
-async function captureDevice (browser, device, screens) {
+async function captureDevice (browser, device, screens, opts) {
   const outDir = join(OUT_DIR, device.platform, device.name)
   mkdirSync(outDir, { recursive: true })
 
@@ -138,12 +144,15 @@ async function captureDevice (browser, device, screens) {
   })
 
   const page = await context.newPage()
+  const stats = { success: 0, failed: 0 }
 
   for (const screen of screens) {
+    const startedAt = Date.now()
     try {
       await page.goto(`${BASE_URL}${screen.route}`, {
-        waitUntil: 'networkidle',
-        timeout: 30_000,
+        // `networkidle` often hangs on Expo web due HMR/WebSocket traffic.
+        waitUntil: opts.waitUntil,
+        timeout: opts.gotoTimeoutMs,
       })
       if (screen.waitFor) {
         await page.waitForSelector(screen.waitFor, { timeout: 8_000 }).catch(() => {})
@@ -151,13 +160,16 @@ async function captureDevice (browser, device, screens) {
       await sleep(1_500)
       const file = join(outDir, `${screen.label}.png`)
       await page.screenshot({ path: file, fullPage: false })
-      console.log(`  ✓ ${screen.label}.png`)
+      stats.success += 1
+      console.log(`  ✓ ${screen.label}.png (${formatMs(Date.now() - startedAt)})`)
     } catch (err) {
-      console.warn(`  ⚠ ${screen.label}: ${err.message}`)
+      stats.failed += 1
+      console.warn(`  ⚠ ${screen.label}: ${err.message} (${formatMs(Date.now() - startedAt)})`)
     }
   }
 
   await context.close()
+  return stats
 }
 
 async function main () {
@@ -165,6 +177,17 @@ async function main () {
   const resetSession = args.includes('--reset-session')
   const platformFilter = args.find(a => a.startsWith('--platform='))?.split('=')[1]
   const deviceFilter = args.find(a => a.startsWith('--device='))?.split('=')[1]
+  const waitUntilArg = args.find(a => a.startsWith('--wait-until='))?.split('=')[1]
+  const gotoTimeoutArg = args.find(a => a.startsWith('--goto-timeout-ms='))?.split('=')[1]
+  const opts = {
+    waitUntil: waitUntilArg || 'domcontentloaded',
+    gotoTimeoutMs: Number(gotoTimeoutArg) > 0 ? Number(gotoTimeoutArg) : 30_000,
+  }
+  const allowedWaitUntil = ['load', 'domcontentloaded', 'networkidle', 'commit']
+  if (!allowedWaitUntil.includes(opts.waitUntil)) {
+    console.error(`Invalid --wait-until value "${opts.waitUntil}". Allowed: ${allowedWaitUntil.join(', ')}`)
+    process.exit(1)
+  }
 
   if (resetSession && existsSync(AUTH_FILE)) {
     rmSync(AUTH_FILE)
@@ -179,8 +202,11 @@ async function main () {
   console.log(`APP_ROOT: ${APP_ROOT}`)
   console.log(`App URL:  ${BASE_URL}`)
   console.log(`Output:   ${OUT_DIR}\n`)
+  console.log(`Navigation waitUntil: ${opts.waitUntil}`)
+  console.log(`Navigation timeout:   ${opts.gotoTimeoutMs}ms\n`)
 
   const browser = await chromium.launch({ headless: false })
+  const runStartedAt = Date.now()
 
   try {
     await ensureAuth(browser)
@@ -196,12 +222,19 @@ async function main () {
       process.exit(1)
     }
 
+    const totals = { success: 0, failed: 0 }
     for (const device of targets) {
       console.log(`\n📱 ${device.name}  ${px(device)}  (${device.description})`)
-      await captureDevice(browser, device, screens)
+      const stats = await captureDevice(browser, device, screens, opts)
+      totals.success += stats.success
+      totals.failed += stats.failed
+      console.log(`   ↳ device result: ${stats.success} saved, ${stats.failed} failed`)
     }
 
     console.log('\n✅ Done.')
+    console.log(`Total screenshots saved: ${totals.success}`)
+    console.log(`Total screenshots failed: ${totals.failed}`)
+    console.log(`Total elapsed: ${formatMs(Date.now() - runStartedAt)}`)
     for (const d of targets) {
       console.log(`   ${d.platform}/${d.name}: ${px(d)} px`)
     }
